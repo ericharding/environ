@@ -1,7 +1,0 @@
-# all: dist/output.css:
-
-dist/output.css: src/input.css
-	npx tailwindcss -i ./src/input.css -o ./dist/output.css 
-
-# --watch
-
