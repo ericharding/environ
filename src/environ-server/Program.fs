@@ -10,6 +10,7 @@ open Microsoft.Extensions.Logging
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
+
 // ---------------------------------
 // Models
 // ---------------------------------
@@ -23,14 +24,16 @@ type Message = { Text: string }
 let indexHandler (name: string) =
     let greetings = sprintf "Hello %s, from Giraffe!" name
     let model = { Text = greetings }
-    let view = Views.index model
-    htmlView view
+    // Views.index model
+    Views.index model
+    // htmlView (Giraffe.ViewEngine.HtmlElements.div [] [])
 
-let webApp =
+let webAppMain : HttpHandler =
     choose [ GET
              >=> choose [ route "/" >=> indexHandler "world"
                           routef "/hello/%s" indexHandler ]
              setStatusCode 404 >=> text "Not Found" ]
+
 
 // ---------------------------------
 // Error handler
@@ -65,7 +68,7 @@ let configureApp (app: IApplicationBuilder) =
              .UseHttpsRedirection())
         .UseCors(configureCors)
         .UseStaticFiles()
-        .UseGiraffe(webApp)
+        .UseGiraffe(webAppMain)
 
 let configureServices (services: IServiceCollection) =
     services.AddCors() |> ignore
@@ -91,6 +94,5 @@ let main args =
             |> ignore)
         .Build()
         .Run()
+    0
 
-    0
-    0

@@ -1,4 +1,6 @@
 module Views
+open Giraffe.DotLiquid
 
-let index() =
-  
+
+let index model =
+  dotLiquidHtmlTemplate "test.html" model
